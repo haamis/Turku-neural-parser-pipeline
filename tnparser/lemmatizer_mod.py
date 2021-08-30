@@ -48,7 +48,11 @@ class Lemmatizer(object):
         
     def init_model(self, args):
         
-        use_gpu = False if args.device < 0 else True
+        if not torch.cuda.is_available() or args.device < 0:
+            use_gpu = False
+        else:
+            use_gpu = True
+
         self.batch_size = args.batch_size
 
         # make virtual files to collect the predicted output (not actually needed but opennmt still requires this)
